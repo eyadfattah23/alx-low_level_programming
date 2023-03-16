@@ -2,6 +2,7 @@
 #include <unistd.h>
 /**
  * main - printing using putchar
+ * Return: 1 (success)
  */
 int main(void)
 {
