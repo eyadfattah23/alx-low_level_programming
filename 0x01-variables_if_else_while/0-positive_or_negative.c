@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib>
 #include <time.h>
 /**
  * main - check numif +ve or -ve
