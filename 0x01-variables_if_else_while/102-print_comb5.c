@@ -1,9 +1,14 @@
 #include <stdio.h>
-
-int main() {
+/**
+ * main - print comb 5
+ * Return: 0 (success)
+ */
+int main(void)
+{
 	int i, j;
 
-	for (i = 0; i < 100; i++) {
+	for (i = 0; i < 100; i++)
+	{
 		for (j = i; j < 100; j++)
 		{
 			putchar(i / 10 + '0');
@@ -18,5 +23,5 @@ int main() {
 			}
 		}
 	}
-	return 0;
+	return (0);
 }
