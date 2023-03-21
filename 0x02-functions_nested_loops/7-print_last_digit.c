@@ -6,6 +6,10 @@
  */
 int print_last_digit(int n)
 {
+	if (n == INT_MIN)
+	{
+		_putchar(-(n % 10) + '0');
+	}
 	if (n < 0)
 	{
 		n *= -1;
