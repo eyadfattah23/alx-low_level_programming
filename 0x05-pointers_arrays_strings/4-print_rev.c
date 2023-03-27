@@ -9,11 +9,6 @@ void print_rev(char *s)
 {
 	int i = 0;
 
-	if (*s == "")
-	{
-		_putchar('\n');
-	} else
-	{
 	while (*(s + i) != '\0')
 	{
 		i++;
@@ -24,5 +19,4 @@ void print_rev(char *s)
 		i--;
 	}
 	_putchar('\n');
-	}
 }
