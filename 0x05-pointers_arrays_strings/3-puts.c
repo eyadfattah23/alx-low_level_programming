@@ -2,6 +2,7 @@
 
 /**
  * _puts - prints a string
+ * @str: str to be printed
  */
 
 void _puts(char *str)
@@ -13,4 +14,5 @@ void _puts(char *str)
 		_putchar(*(str + i));
 		i++;
 	}
+	_putchar('\n');
 }
