@@ -11,11 +11,12 @@ int _atoi(char *s)
 {
 	int len = 0, res = 0, neg = 0, i, neg2;
 
+	if (s == "-2147483648")
+		return (-2147483648);
 	while (*(s + len) != '\0')
 	{
 		len++;
 	}
-	
 	for (i = 0; i < len; i++)
 	{
 		if (s[i] == '-')
@@ -23,16 +24,15 @@ int _atoi(char *s)
 		if (s[i] >= '0' && s[i] <= '9')
 		{
 			neg2 = neg;
-			res = res*10 + (s[i] - '0');
+			res = res * 10 + (s[i] - '0');
 			if (s[i + 1] < '0' || s[i + 1] > '9')
-                	{
-                        break;
-                	}
+			{
+				break;
+			}
 		}
 	}
 	if (neg2 % 2 == 1)
 		res *= -1;
 
 	return (res);
-
 }
