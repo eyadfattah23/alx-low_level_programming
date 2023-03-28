@@ -2,35 +2,21 @@
 #include <stdlib.h>
 #include <time.h>
 
-/**
- * main - generates random valid passwords
- * Return: 0 if success
- */
-
-int main(void)
+int main()
 {
     int i;
-    char password[100];
+    char password[11];
 
     srand(time(NULL));
-    for(i = 0; i < 12; i++)
+
+    for(i=0; i<10; i++)
     {
-        switch(rand()%4)
-        {
-            case 0:
-                password[i] = 'A' + rand()%26;
-                break;
-            case 1:
-                password[i] = 'a' + rand()%26;
-                break;
-            case 2:
-                password[i] = '0' + rand()%10;
-                break;
-            case 3:
-                password[i] = '!' + rand()%15;
-                break;
-        }
+        password[i] = 'A' + rand()%26;
     }
-    printf("%s", password);
-    return (0);
+
+    password[10] = '\0';
+
+    printf("%s\n", password);
+
+    return 0;
 }
