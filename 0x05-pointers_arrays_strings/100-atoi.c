@@ -11,8 +11,6 @@ int _atoi(char *s)
 {
 	int len = 0, res = 0, neg = 0, i, neg2;
 
-	if (s == "-2147483648")
-		return (-2147483648);
 	while (*(s + len) != '\0')
 	{
 		len++;
