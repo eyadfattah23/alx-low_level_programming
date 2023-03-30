@@ -18,13 +18,14 @@ int _strlen(char *s)
 }
 
 /**
- * _strcat - concatenates two strings.
+ * _strncat - concatenates two strings.
  * @dest: appended to str
  * @src: appended str
+ * @n: num of appended chars
  * Return: pointer to the resulting string dest
  */
 
-char *_strcat(char *dest, char *src)
+char *_strncat(char *dest, char *src, int n)
 {
 	int ldst, lsrc, i, j;
 
@@ -33,13 +34,12 @@ char *_strcat(char *dest, char *src)
 	i = ldst;
 	j = 0;
 
-	while (i < ldst + lsrc)
+	while ((i < ldst + lsrc) && (i < ldst + n))
 	{
 		dest[i] = src[j];
 		i++;
 		j++;
 	}
-	dest[i] = '\0';
 
 	return (dest);
 }
