@@ -17,8 +17,9 @@ char *rot13(char *s)
 		for (j = 0; j < 26 * 2; j++)
 		{
 			if (s[i] == e[j])
-				s[i] = es[j];
-			break;
+			{	s[i] = es[j];
+				break;
+			}
 		}
 	}
 	return (s);
