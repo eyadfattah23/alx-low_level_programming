@@ -42,7 +42,7 @@ char *cap_string(char *s)
 {
 	int i;
 
-	for (i = 1; i < _strlen(s); i++)
+	for (i = 0; i <= _strlen(s); i++)
 	{
 		while (!(_islower(s[i])))
 			i++;
@@ -61,7 +61,8 @@ char *cap_string(char *s)
 			s[i - 1] == '(' ||
 			s[i - 1] == ')' ||
 			s[i - 1] == '{' ||
-			s[i - 1] == '}'
+			s[i - 1] == '}' ||
+			i == 0
 			)
 		)
 		{
