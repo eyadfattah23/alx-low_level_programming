@@ -35,7 +35,7 @@ int _islower(int c)
 
 /**
  * cap_string - capitalizes all words of a string.
- * @str: str to be converted
+ * @s: str to be converted
  * Return: converted str
  */
 char *cap_string(char *s)
@@ -44,7 +44,25 @@ char *cap_string(char *s)
 
 	for (i = 0; i < _strlen(s) - 1; i++)
 	{
-		if ((s[i] == ' ' || s[i] == '\n' || s[i] == '\t' || s[i] == '\n' || s[i] == ',' || s[i] == ';' || s[i] == '.' || s[i] == '!' || s[i] == '?' || s[i] == '"' || s[i] == '(' || s[i] == ')' || s[i] == '{' || s[i] == '}') && _islower(s[i + 1]))
+		if (
+			(
+			s[i] == ' ' ||
+			s[i] == '\n' ||
+			s[i] == '\t' ||
+			s[i] == '\n' ||
+			s[i] == ',' ||
+			s[i] == ';' ||
+			s[i] == '.' ||
+			s[i] == '!' ||
+			s[i] == '?' ||
+			s[i] == '"' ||
+			s[i] == '(' ||
+			s[i] == ')' ||
+			s[i] == '{' ||
+			s[i] == '}'
+			)
+			&& _islower(s[i + 1])
+		)
 		{
 			s[i + 1] -= 32;
 		}
