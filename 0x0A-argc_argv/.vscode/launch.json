@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/eyad/work/alx-low_level_programming/0x0A. C - argc, argv",
-      "program": "/home/eyad/work/alx-low_level_programming/0x0A. C - argc, argv/build/Debug/outDebug",
+      "cwd": "/home/eyad/work/alx-low_level_programming/0x0A-argc_argv",
+      "program": "/home/eyad/work/alx-low_level_programming/0x0A-argc_argv/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
