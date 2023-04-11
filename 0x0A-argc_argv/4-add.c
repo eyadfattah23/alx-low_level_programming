@@ -17,12 +17,13 @@ int main(int argc, char *argv[])
 	}
 	for (i = 1; i < argc; i++)
 	{
-		if (atoi(argv[i]) == 0)
+		if (atoi(argv[i]) > 0)
+			sum += atoi(argv[i]);
+		else
 		{
 			printf("Error\n");
 			return (1);
-		}
-		sum += atoi(argv[i]);
+		}	
 	}
 		printf("%d\n", sum);
 	return (0);
