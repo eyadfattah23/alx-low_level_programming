@@ -2,7 +2,6 @@
 
 /**
  * _strdup - returns a pointer to a copy of the string
- * 
  * @str: the string to copy
  * Return: a pointer to a copy of the string
  */
