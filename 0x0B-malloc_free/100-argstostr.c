@@ -21,7 +21,7 @@ int _strlen(char *s)
 	return (i);
 }
 /**
- * argtostr - concatenates all the arguments of your program.
+ * argstostr - concatenates all the arguments of your program.
  * @ac: arg count
  * @av: arg values
  * Return: the concatenated string
@@ -35,7 +35,6 @@ char *argstostr(int ac, char **av)
 	{
 		return (NULL);
 	}
-	
 	for (i = 0; i < ac; i++)
 	{
 		totlen += _strlen(av[i]);
