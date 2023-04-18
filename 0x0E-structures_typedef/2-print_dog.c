@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/**
+ * print_dog - prints a struct dog
+ * @d: a struct dog to print
+ */
 void print_dog(struct dog *d)
 {
 	if (d == NULL)
@@ -25,5 +29,4 @@ void print_dog(struct dog *d)
 	{
 		printf("owner: %s\n", d->owner);
 	}
-	
 }
