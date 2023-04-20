@@ -9,6 +9,7 @@
 int main(int argc, char *argv[])
 {
 	char *operator = argv[2];
+	
 	if ((argc != 4))
 	{
 		printf("Error\n");
