@@ -8,10 +8,14 @@
 size_t print_list(const list_t *h)
 {
 	unsigned int nod_n = 0;
-	char *str = h->str;
-	unsigned int len = h->len;
+	char *str;
+	unsigned int len;
 	const list_t *c_node = h;
 
+	if (!h)
+	{
+		return (0);
+	}
 
 	for (nod_n = 0; c_node != NULL; nod_n++)
 	{
