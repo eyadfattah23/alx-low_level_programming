@@ -1,19 +1,22 @@
+; hello.asm
+global main
+extern printf
+
 section .data
-    hello db 'Hello, Holberton', 0
-    format db '%s\n', 0
+    hello_msg db 'Hello, Holberton', 10, 0 ; 10 is the ASCII code for a newline, 0 is the null terminator
 
 section .text
-    global main
-
 main:
-    ; prepare arguments for printf
-    mov rdi, format
-    mov rsi, hello
-    xor eax, eax ; clear eax as the function return value
+    ; Save the base pointer and set up the stack frame
+    push rbp
+    mov rbp, rsp
 
-    ; call printf
-    call printf
+    ; Call printf with the hello_msg address as the argument
+    lea rdi, [rel hello_msg] ; Load the address of hello_msg into RDI (first argument)
+    xor rax, rax             ; Set RAX to 0 (printf is a variadic function, so RAX should contain the number of vector registers used)
+    call printf              ; Call printf
 
-    ; exit program
-    xor eax, eax
-    ret
+    ; Clean up the stack frame and return
+    xor rax, rax             ; Set RAX to 0 (return value)
+    leave                    ; Restore the base pointer and stack pointer
+    ret                      ; Return
