@@ -14,6 +14,8 @@ listint_t *add_nodeint_end(listint_t **head, const int n)
 	if (!n_node)
 		return (NULL);
 
+	n_node->n = n;
+	n_node->next = NULL;
 	if (!c_node)
 		*head = n_node;
 
@@ -21,9 +23,7 @@ listint_t *add_nodeint_end(listint_t **head, const int n)
 	{
 		for (; c_node->next; c_node = c_node->next)
 		;
-		n_node->n = n;
 		c_node->next = n_node;
-		n_node->next = NULL;
 	}
 	return (n_node);
 }
