@@ -8,19 +8,9 @@
  */
 int clear_bit(unsigned long int *n, unsigned int index)
 {
-	unsigned long int m = 1;
-
 	if (index >= sizeof(*n) * 8 || !n)
 		return (-1);
 
-	while (index-- > 0)
-		m *= 2;
-
-	if (m > *n)
-		return (-1);
-	else if (*n == 0)
-		*n = 0;
-	else
-		*n = *n - m;
+	*n = *n & ~(1 << index);
 	return (1);
 }
