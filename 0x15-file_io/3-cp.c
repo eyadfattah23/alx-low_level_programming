@@ -12,12 +12,12 @@ void *buffer_creat(char *str)
 }
 void close_check(int fd)
 {
-	if (close(fd) == -1)
+	int cf = close(fd);
+	if (cf == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't close fd %i", fd);
 		exit(100);
 	}
-	close(fd);
 }
 int main(int argc, char *argv[])
 {
