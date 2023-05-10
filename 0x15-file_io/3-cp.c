@@ -1,8 +1,14 @@
 #include "main.h"
 
+/**
+ * buffer_creat - creates a 1024 byte buffer
+ * @str: argv[1]
+ * Return: pointer to the buffer
+ */
 void *buffer_creat(char *str)
 {
 	char *buffer = malloc(1024);
+
 	if (!buffer)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", str);
@@ -10,6 +16,10 @@ void *buffer_creat(char *str)
 	}
 	return (buffer);
 }
+/**
+ * close_check - closes open descriptor
+ * @fd: file descriptor
+ */
 void close_check(int fd)
 {
 	if (close(fd) == -1)
@@ -19,6 +29,12 @@ void close_check(int fd)
 	}
 	close(fd);
 }
+/**
+ * main - copies the content of a file to another file.
+ * @argc: args count
+ * @argv: args vector
+ * Return: (0)
+ */
 int main(int argc, char *argv[])
 {
 	int file_from, file_to, rb, wb;
@@ -32,8 +48,7 @@ int main(int argc, char *argv[])
 	file_from = open(argv[1], O_RDONLY);
 	file_to = open(argv[2], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 	buffer = buffer_creat(argv[1]);
-	do
-	{
+	do {
 		rb = read(file_from, buffer, 1024);
 		if (file_from == -1 || rb == -1)
 		{
@@ -49,8 +64,6 @@ int main(int argc, char *argv[])
 			exit(99);
 		}
 	} while (rb > 0);
-	
-
 
 	free(buffer);
 	close_check(file_from);
