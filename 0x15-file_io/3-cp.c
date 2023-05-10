@@ -10,6 +10,15 @@ void *buffer_creat(char *str)
 	}
 	return (buffer);
 }
+int close_check(int fd)
+{
+	if (close(fd) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %i", fd);
+		exit(100);
+	}
+	close(fd);
+}
 int main(int argc, char *argv[])
 {
 	int file_from, file_to, rb, wb;
@@ -32,15 +41,8 @@ int main(int argc, char *argv[])
 	}
 
 	file_to = open(argv[2], O_WRONLY | O_TRUNC | O_CREAT, 0664);
-	if (file_to == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		free(buffer);
-		close(file_from);
-		exit(99);
-	}
 	wb = write(file_to, buffer, rb);
-	if (wb == -1)
+	if (file_to == -1 || wb == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 		free(buffer);
@@ -48,6 +50,7 @@ int main(int argc, char *argv[])
 		close(file_to);
 		exit(99);
 	}
+
 	free(buffer);
 	if (close(file_from) == -1)
 	{
