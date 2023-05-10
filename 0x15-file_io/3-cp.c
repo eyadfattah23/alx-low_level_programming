@@ -1,5 +1,15 @@
 #include "main.h"
 
+void *buffer_creat(char *str)
+{
+	char *buffer = malloc(1024);
+	if (!buffer)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", str);
+		exit(98);
+	}
+	return (buffer);
+}
 int main(int argc, char *argv[])
 {
 	int file_from, file_to, rb, wb;
@@ -16,7 +26,7 @@ int main(int argc, char *argv[])
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
-	buffer = malloc(1024);
+	buffer = buffer_creat(argv[1]);
 	rb = read(file_from, buffer, 1024);
 	if (rb == -1)
 	{
