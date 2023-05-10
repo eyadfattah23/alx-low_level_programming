@@ -10,7 +10,7 @@ void *buffer_creat(char *str)
 	}
 	return (buffer);
 }
-int close_check(int fd)
+void close_check(int fd)
 {
 	if (close(fd) == -1)
 	{
