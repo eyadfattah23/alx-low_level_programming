@@ -21,20 +21,16 @@ int main(int argc, char *argv[])
 		exit(97);
 	}
 	file_from = open(argv[1], O_RDONLY);
-	if (file_from == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-		exit(98);
-	}
 	buffer = buffer_creat(argv[1]);
 	rb = read(file_from, buffer, 1024);
-	if (rb == -1)
+	if (file_from == -1 || rb == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		free(buffer);
 		close(file_from);
 		exit(98);
 	}
+
 	file_to = open(argv[2], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 	if (file_to == -1)
 	{
