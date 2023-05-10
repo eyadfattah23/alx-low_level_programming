@@ -1,0 +1,59 @@
+#include "main.h"
+
+int main(int argc, char *argv[])
+{
+	int file_from, file_to, rb, wb;
+	char *buffer;
+
+	if (argc != 3)
+	{
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		exit(97);
+	}
+	file_from = open(argv[1], O_RDONLY);
+	if (file_from == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
+	}
+	buffer = malloc(1024);
+	rb = read(file_from, buffer, 1024);
+	if (rb == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		free(buffer);
+		close(file_from);
+		exit(98);
+	}
+	file_to = open(argv[2], O_WRONLY | O_TRUNC | O_CREAT, 0664);
+	if (file_to == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		free(buffer);
+		close(file_from);
+		exit(99);
+	}
+	wb = write(file_to, buffer, rb);
+	if (wb == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		free(buffer);
+		close(file_from);
+		close(file_to);
+		exit(99);
+	}
+	free(buffer);
+	if (close(file_from) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %i", file_from);
+		exit(100);
+	}
+	close(file_from);
+	if (close(file_to) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %i", file_to);
+		exit(100);
+	}
+	close(file_to);
+	return (0);
+}
