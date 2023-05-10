@@ -1,5 +1,4 @@
 #include "main.h"
-#include <sys/stat.h>
 /**
  * _strlen - returns the length of a string.
  * @s: string to be measured
@@ -24,7 +23,7 @@ int _strlen(char *s)
  */
 int create_file(const char *filename, char *text_content)
 {
-	int file, wb;
+	int file, wb, l = 0;
 
 	if (!filename)
 		return (-1);
@@ -32,8 +31,10 @@ int create_file(const char *filename, char *text_content)
 	file = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
 	if (file == -1)
 		return (-1);
-
-	wb = write(file, text_content, _strlen(text_content));
+	if (text_content != NULL)
+		l = _strlen(text_content);
+	
+	wb = write(file, text_content, l);
 	if (wb == -1)
 		return (-1);
 
