@@ -73,18 +73,20 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	}
 	else
 	{
-		if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
+		while (current)
 		{
-			strcpy(ht->array[index]->value, value);
-			free_hash_node(new);
-			return (1);
+			if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
+			{
+				strcpy(ht->array[index]->value, value);
+				free_hash_node(new);
+				return (1);
+			}
 		}
-		else /*Scenario 2: Handle the collision.*/
-		{
+		
+		/*Scenario 2: Handle the collision.*/
 			ht->array[index] = new;
 			new->next = tmp;
 			return (1);
-		}
 	}
 	free_hash_node(new);
 	return (0);
