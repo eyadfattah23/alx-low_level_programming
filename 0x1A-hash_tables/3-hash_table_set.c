@@ -63,35 +63,25 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 		free_hash_node(new);
 		return (0);
 	}
-	if (!new || !key || !value)
+	if (!new)
 		return (0);
 
 	index = key_index((const unsigned char *)key, ht->size);
 	current = ht->array[index];
 	tmp = current;
-	if (!current)
+
+	while (current)
 	{
-		/*Key does not exist.*/
-		ht->array[index] = new;
-		return (1);
-	}
-	else
-	{
-		while (current)
+		if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
 		{
-			if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
-			{
-				strcpy(current->value, value);
-				free_hash_node(new);
-				return (1);
-			}
-			current = current->next;
-		}
-		/*Scenario 2: Handle the collision.*/
-			ht->array[index] = new;
-			new->next = tmp;
+			strcpy(current->value, value);
+			free_hash_node(new);
 			return (1);
+		}
+		current = current->next;
 	}
-	free_hash_node(new);
-	return (0);
+	/*Scenario 2: Handle the collision. and non-existent key*/
+	ht->array[index] = new;
+	new->next = tmp;
+	return (1);
 }
