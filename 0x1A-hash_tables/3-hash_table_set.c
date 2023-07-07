@@ -16,12 +16,17 @@ hash_node_t *hash_node_create(const char *key, const char *value)
 
 	n_node->key = malloc(strlen(key) + 1);
 	if (!(n_node->key))
+	{
 		return (NULL);
-
+	}
 	n_node->value = malloc(strlen(value) + 1);
-	if (!(n_node->value))
-		return (NULL);
 
+	if (!(n_node->value))
+	{
+		free(n_node->key);
+		free(n_node);
+		return (NULL);
+	}
 	n_node->next = NULL;
 	strcpy(n_node->key, key);
 	strcpy(n_node->value, value);
@@ -49,11 +54,17 @@ void free_hash_node(hash_node_t *node)
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-	unsigned long int index = key_index((const unsigned char *)key, ht->size);
+	unsigned long int index;
 	hash_node_t *new = hash_node_create(key, value);
 	hash_node_t *current = ht->array[index];
 	hash_node_t *tmp = current;
 
+	if (!ht)
+	{
+		free_hash_node(new);
+		return (0);
+	}
+	index = key_index((const unsigned char *)key, ht->size);
 	if (!current)
 	{
 		/*Key does not exist.*/
