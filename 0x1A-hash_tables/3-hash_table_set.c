@@ -81,8 +81,8 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 				free_hash_node(new);
 				return (1);
 			}
+			current = current->next;
 		}
-		
 		/*Scenario 2: Handle the collision.*/
 			ht->array[index] = new;
 			new->next = tmp;
