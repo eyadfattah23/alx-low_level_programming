@@ -81,7 +81,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 		{
 			if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
 			{
-				strcpy(ht->array[index]->value, value);
+				strcpy(current->value, value);
 				free_hash_node(new);
 				return (1);
 			}
