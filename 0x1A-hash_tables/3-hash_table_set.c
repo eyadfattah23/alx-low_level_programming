@@ -54,7 +54,7 @@ void free_hash_node(hash_node_t *node)
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
 	unsigned long int index;
-	hash_node_t *new = hash_node_create(key, value), *current, *tmp;
+	hash_node_t *new, *current, *tmp;
 
 	if (!ht || !key || key[0] == '\0' || !value)
 		return (0);
