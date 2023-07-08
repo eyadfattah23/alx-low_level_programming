@@ -22,7 +22,7 @@ void free_linkedlist(hash_node_t *node)
 void hash_table_delete(hash_table_t *ht)
 {
 	unsigned long int i;
-	hash_node_t *c_node, *nxt;
+	hash_node_t *c_node;
 
 	if (!ht)
 		return;
