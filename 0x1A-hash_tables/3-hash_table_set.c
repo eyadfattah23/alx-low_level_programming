@@ -80,9 +80,9 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 			if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
 			{
 				current->value = strdup(value);
+				free_hash_node(new);
 				if (!current->value)
 					return (0);
-				free_hash_node(new);
 				return (1);
 			}
 			current = current->next;
