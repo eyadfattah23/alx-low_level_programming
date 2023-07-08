@@ -67,9 +67,8 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	index = key_index((const unsigned char *)key, ht->size);
 	current = ht->array[index];
 	tmp = current;
-	if (!current)
+	if (!current) /*Key does not exist.*/
 	{
-		/*Key does not exist.*/
 		ht->array[index] = new;
 		return (1);
 	}
@@ -86,8 +85,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 				return (1);
 			}
 			current = current->next;
-		}
-		/*Scenario 2: Handle the collision.*/
+		}	/*Scenario 2: Handle the collision.*/
 			ht->array[index] = new;
 			new->next = tmp;
 			return (1);
