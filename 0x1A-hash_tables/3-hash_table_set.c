@@ -14,13 +14,13 @@ hash_node_t *hash_node_create(const char *key, const char *value)
 	if (!n_node)
 		return (NULL);
 
-	n_node->key = malloc(strlen(key) + 1);
+	n_node->key = strdup(key);
 	if (!(n_node->key))
 	{
 		free(n_node);
 		return (NULL);
 	}
-	n_node->value = malloc(strlen(value) + 1);
+	n_node->value = strdup(value);
 
 	if (!(n_node->value))
 	{
@@ -29,8 +29,6 @@ hash_node_t *hash_node_create(const char *key, const char *value)
 		return (NULL);
 	}
 	n_node->next = NULL;
-	strcpy(n_node->key, key);
-	strcpy(n_node->value, value);
 	return (n_node);
 }
 
@@ -81,7 +79,9 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 		{
 			if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
 			{
-				strcpy(current->value, value);
+				current->value = strdup(value);
+				if (!current->value)
+					return (0);
 				free_hash_node(new);
 				return (1);
 			}
