@@ -54,18 +54,18 @@ void free_hash_node(hash_node_t *node)
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
 	unsigned long int index;
-	hash_node_t *new = hash_node_create(key, value), *current;
+	hash_node_t *new = hash_node_create(key, value), *current, *tmp;
 
 	if (!ht || !key || key[0] == '\0' || !value)
-	{
-		free_hash_node(new);
 		return (0);
-	}
+
+	new = hash_node_create(key, value);
 	if (!new)
 		return (0);
 
 	index = key_index((const unsigned char *)key, ht->size);
 	current = ht->array[index];
+	tmp = current;
 	if (!current) /*Key does not exist.*/
 	{
 		ht->array[index] = new;
@@ -86,7 +86,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 			current = current->next;
 		}	/*Scenario 2: Handle the collision.*/
 			ht->array[index] = new;
-			new->next = ht->array[index];
+			new->next = tmp;
 			return (1);
 	}
 	free_hash_node(new);
