@@ -168,19 +168,19 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 
 	index = key_index((const unsigned char *)key, ht->size);
 	current = ht->array[index];
-		while (current)
+	while (current)
+	{
+		if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
 		{
-			if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
-			{
-				free(current->value);
-				current->value = strdup(value);
-				free_shash_node(new);
-				if (!current->value)
-					return (0);
-				return (1);
-			}
-			current = current->next;
-		} /*Scenario 2: Handle the collision. || key doesn't exist*/
+			free(current->value);
+			current->value = strdup(value);
+			free_shash_node(new);
+			if (!current->value)
+				return (0);
+			return (1);
+		}
+		current = current->next;
+	} /*Scenario 2: Handle the collision. || key doesn't exist*/
 	new->next = ht->array[index];
 	ht->array[index] = new;
 	insert_shash_node(ht, new);
@@ -268,4 +268,34 @@ void shash_table_print_rev(const shash_table_t *ht)
 	{
 		printf("{}\n");
 	}
+}
+/**
+ * shash_table_delete - delete a hash table
+ * @ht: hash table
+ */
+void shash_table_delete(shash_table_t *ht)
+{
+	unsigned long int i;
+	shash_node_t *c_node, *nxt;
+
+	if (!ht)
+		return;
+
+	for (i = 0; i < ht->size; i++)
+	{
+		if (ht->array[i])
+		{
+			c_node = ht->array[i];
+			while (c_node)
+			{
+				nxt = c_node->next;
+				free(c_node->key);
+				free(c_node->value);
+				free(c_node);
+				c_node = nxt;
+			}
+		}
+	}
+	free(ht->array);
+	free(ht);
 }
