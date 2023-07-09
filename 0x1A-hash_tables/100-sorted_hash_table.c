@@ -134,16 +134,17 @@ void insert_shash_node(shash_table_t *ht, shash_node_t *new)
 		if (strcmp(new->key, cnode->key) > 0)
 		{
 			new->snext = cnode->snext;
-			new->sprev = cnode->sprev;
+			new->sprev = cnode;
 			cnode->snext = new;
 			if (new->snext)
 				new->snext->sprev = new;
-			else
-				ht->stail = new;
 			return;
 		}
 	}
-	free(new);
+	ht->stail->snext = new;
+	new->sprev = ht->stail;
+	new->snext = NULL;
+	ht->stail = new;
 }
 /**
  * shash_table_set - adds an element to the hash table.
@@ -167,14 +168,6 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 
 	index = key_index((const unsigned char *)key, ht->size);
 	current = ht->array[index];
-	if (!current) /*Key does not exist.*/
-	{
-		ht->array[index] = new;
-		insert_shash_node(ht, new);
-		return (1);
-	}
-	else
-	{
 		while (current)
 		{
 			if (strcmp(current->key, key) == 0) /*Scenario 1: Update the value.*/
@@ -187,14 +180,11 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 				return (1);
 			}
 			current = current->next;
-		} /*Scenario 2: Handle the collision.*/
-		ht->array[index] = new;
-		new->next = ht->array[index];
-		insert_shash_node(ht, new);
-		return (1);
-	}
-	free_shash_node(new);
-	return (0);
+		} /*Scenario 2: Handle the collision. || key doesn't exist*/
+	new->next = ht->array[index];
+	ht->array[index] = new;
+	insert_shash_node(ht, new);
+	return (1);
 }
 
 /**
@@ -227,7 +217,7 @@ char *shash_table_get(const shash_table_t *ht, const char *key)
 	return (NULL);
 }
 /**
- * shash_table_print - prints a hash table
+ * shash_table_print - print the hash table using the sorted linked list
  * @ht: hash table to be printed
  */
 void shash_table_print(const shash_table_t *ht)
@@ -248,5 +238,34 @@ void shash_table_print(const shash_table_t *ht)
 			cnode = cnode->snext;
 		}
 		printf("}\n");
+	}
+}
+/**
+ * shash_table_print_rev - print the hash table's key/value pairs in reverse order
+ * using the sorted linked list
+ * @ht: hash table to be printed
+ */
+void shash_table_print_rev(const shash_table_t *ht)
+{
+	unsigned long int count = 0;
+	shash_node_t *cnode;
+
+	if (ht && ht->shead)
+	{
+		printf("{");
+		cnode = ht->stail;
+		while (cnode)
+		{
+			if (count > 0)
+				printf(", ");
+			printf("'%s': '%s'", cnode->key, cnode->value);
+			count++;
+			cnode = cnode->sprev;
+		}
+		printf("}\n");
+	}
+	else
+	{
+		printf("{}\n");
 	}
 }
