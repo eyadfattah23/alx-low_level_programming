@@ -1,34 +1,4 @@
 #include "hash_tables.h"
-/**
- * hash_djb2 - implementation of the djb2 algorithm
- * @str: string used to generate hash value
- *
- * Return: hash value
- */
-unsigned long int hash_djb2(const unsigned char *str)
-{
-	unsigned long int hash;
-	int c;
-
-	hash = 5381;
-	while ((c = *str++))
-	{
-		hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-	}
-	return (hash);
-}
-/**
- * key_index - gives you the index of a key.
- * @key: the key string
- * The key is unique in the HashTable
- * @size: size of the hash table
- * Return: index at which the key/value pair
- * should be stored in the array of the hash table
- */
-unsigned long int key_index(const unsigned char *key, unsigned long int size)
-{
-	return (hash_djb2(key) % size);
-}
 
 /**
  * shash_table_create - creates a php(sorted) hash table.
@@ -131,20 +101,19 @@ void insert_shash_node(shash_table_t *ht, shash_node_t *new)
 	}
 	for (; cnode; cnode = cnode->snext)
 	{
-		if (strcmp(new->key, cnode->key) > 0)
+		if (strcmp(new->key, cnode->key) <= 0)
 		{
-			new->snext = cnode->snext;
-			new->sprev = cnode;
-			cnode->snext = new;
-			if (new->snext)
-				new->snext->sprev = new;
+			new->snext = cnode;
+			cnode->sprev->snext = new;
+			new->sprev = cnode->sprev;
+			cnode->sprev = new;
 			return;
 		}
 	}
 	ht->stail->snext = new;
 	new->sprev = ht->stail;
-	new->snext = NULL;
 	ht->stail = new;
+	ht->stail->snext = NULL;
 }
 /**
  * shash_table_set - adds an element to the hash table.
@@ -250,7 +219,7 @@ void shash_table_print_rev(const shash_table_t *ht)
 	unsigned long int count = 0;
 	shash_node_t *cnode;
 
-	if (ht && ht->shead)
+	if (ht)
 	{
 		printf("{");
 		cnode = ht->stail;
@@ -263,10 +232,6 @@ void shash_table_print_rev(const shash_table_t *ht)
 			cnode = cnode->sprev;
 		}
 		printf("}\n");
-	}
-	else
-	{
-		printf("{}\n");
 	}
 }
 /**
