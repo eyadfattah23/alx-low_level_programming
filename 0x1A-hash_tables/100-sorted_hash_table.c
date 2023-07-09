@@ -241,7 +241,7 @@ void shash_table_print(const shash_table_t *ht)
 	}
 }
 /**
- * shash_table_print_rev - print the hash table's key/value pairs in reverse order
+ * shash_table_print_rev - print the hash table's key/value in reverse order
  * using the sorted linked list
  * @ht: hash table to be printed
  */
