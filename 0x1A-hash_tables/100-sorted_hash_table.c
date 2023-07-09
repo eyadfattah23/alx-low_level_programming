@@ -1,4 +1,10 @@
 #include "hash_tables.h"
+/**
+ * hash_djb2 - implementation of the djb2 algorithm
+ * @str: string used to generate hash value
+ *
+ * Return: hash value
+ */
 unsigned long int hash_djb2(const unsigned char *str)
 {
 	unsigned long int hash;
@@ -11,6 +17,14 @@ unsigned long int hash_djb2(const unsigned char *str)
 	}
 	return (hash);
 }
+/**
+ * key_index - gives you the index of a key.
+ * @key: the key string
+ * The key is unique in the HashTable
+ * @size: size of the hash table
+ * Return: index at which the key/value pair
+ * should be stored in the array of the hash table
+ */
 unsigned long int key_index(const unsigned char *key, unsigned long int size)
 {
 	return (hash_djb2(key) % size);
@@ -212,7 +226,10 @@ char *shash_table_get(const shash_table_t *ht, const char *key)
 	}
 	return (NULL);
 }
-
+/**
+ * shash_table_print - prints a hash table
+ * @ht: hash table to be printed
+ */
 void shash_table_print(const shash_table_t *ht)
 {
 	unsigned long int count = 0;
