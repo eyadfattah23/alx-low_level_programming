@@ -1,4 +1,20 @@
 #include "hash_tables.h"
+unsigned long int hash_djb2(const unsigned char *str)
+{
+	unsigned long int hash;
+	int c;
+
+	hash = 5381;
+	while ((c = *str++))
+	{
+		hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+	}
+	return (hash);
+}
+unsigned long int key_index(const unsigned char *key, unsigned long int size)
+{
+	return (hash_djb2(key) % size);
+}
 
 /**
  * shash_table_create - creates a php(sorted) hash table.
@@ -15,9 +31,12 @@ shash_table_t *shash_table_create(unsigned long int size)
 		return (NULL);
 
 	stable->size = size;
-	stable->array = (shash_node_t **)calloc(stable->size, sizeof(shash_node_t));
+	stable->array = (shash_node_t **)calloc(stable->size, sizeof(shash_node_t *));
 	if (!stable->array)
+	{
+		free(stable);
 		return (NULL);
+	}
 	stable->shead = NULL;
 	stable->stail = NULL;
 	for (i = 0; i < stable->size; i++)
@@ -62,39 +81,13 @@ shash_node_t *shash_node_create(const char *key, const char *value)
  * free_shash_node - free a hash node
  * @node: node to be freed
  */
-void free_shash_node(hash_node_t *node)
+void free_shash_node(shash_node_t *node)
 {
 	free(node->key);
 	free(node->value);
 	free(node);
 }
-/**
- * sortList - sort a the php list
- *
- * @ht: the hash table
- */
-void sortList(shash_table_t *ht)
-{
-	shash_node_t *cnode = ht->shead, *nxt;
-	char *tmp;
 
-	if (!cnode)
-		return (NULL);
-
-	for (; cnode->snext; cnode = cnode->snext)
-	{
-		for (nxt = cnode->snext; nxt; nxt = nxt->snext)
-		{
-			if (strcmp(cnode->key, nxt->key) >= 0)
-			{
-				tmp = strdup(cnode->key);
-				cnode->key = nxt->key;
-				nxt->key = tmp;
-				free(tmp);
-			}
-		}
-	}
-}
 /**
  * insert_shash_node - insert a shash_node at the right place
  * in the sorted linked list
@@ -102,10 +95,9 @@ void sortList(shash_table_t *ht)
  * @new: the new node to be inserted
  * Return: postion of the new node
  */
-shash_node_t *insert_shash_node(shash_table_t *ht, shash_node_t *new)
+void insert_shash_node(shash_table_t *ht, shash_node_t *new)
 {
 	shash_node_t *cnode = ht->shead;
-	unsigned long int i;
 
 	if (!cnode && !ht->stail)
 	{
@@ -113,7 +105,7 @@ shash_node_t *insert_shash_node(shash_table_t *ht, shash_node_t *new)
 		ht->stail = new;
 		new->snext = NULL;
 		new->sprev = NULL;
-		return (cnode);
+		return;
 	}
 	if (strcmp(new->key, cnode->key) < 0)
 	{
@@ -121,8 +113,9 @@ shash_node_t *insert_shash_node(shash_table_t *ht, shash_node_t *new)
 		new->snext = ht->shead;
 		new->sprev = NULL;
 		ht->shead = new;
+		return;
 	}
-	for (i = 0; cnode; i++, cnode = cnode->snext)
+	for (; cnode; cnode = cnode->snext)
 	{
 		if (strcmp(new->key, cnode->key) > 0)
 		{
@@ -133,11 +126,10 @@ shash_node_t *insert_shash_node(shash_table_t *ht, shash_node_t *new)
 				new->snext->sprev = new;
 			else
 				ht->stail = new;
-			return (new);
+			return;
 		}
 	}
 	free(new);
-	return (NULL);
 }
 /**
  * shash_table_set - adds an element to the hash table.
@@ -151,7 +143,7 @@ shash_node_t *insert_shash_node(shash_table_t *ht, shash_node_t *new)
 int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 {
 	unsigned long int index;
-	shash_node_t *new, *current, *tmp;
+	shash_node_t *new, *current;
 
 	if (!ht || !key || key[0] == '\0' || !value)
 		return (0);
@@ -183,7 +175,7 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 			current = current->next;
 		} /*Scenario 2: Handle the collision.*/
 		ht->array[index] = new;
-		new->next = tmp;
+		new->next = ht->array[index];
 		insert_shash_node(ht, new);
 		return (1);
 	}
@@ -198,10 +190,10 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
  * Return: the value associated with the element,
  * or NULL if key couldn’t be found
  */
-char *shash_table_get(const hash_table_t *ht, const char *key)
+char *shash_table_get(const shash_table_t *ht, const char *key)
 {
 	int index;
-	hash_node_t *node;
+	shash_node_t *node;
 
 	if (!ht || !key || key[0] == '\0')
 		return (NULL);
@@ -219,4 +211,25 @@ char *shash_table_get(const hash_table_t *ht, const char *key)
 		node = node->next;
 	}
 	return (NULL);
+}
+
+void shash_table_print(const shash_table_t *ht)
+{
+	unsigned long int count = 0;
+	shash_node_t *cnode;
+
+	if (ht)
+	{
+		printf("{");
+		cnode = ht->shead;
+		while (cnode)
+		{
+			if (count > 0)
+				printf(", ");
+			printf("'%s': '%s'", cnode->key, cnode->value);
+			count++;
+			cnode = cnode->snext;
+		}
+		printf("}\n");
+	}
 }
