@@ -22,8 +22,4 @@ fclean:
 	$(RM) *~ $(NAME) $(OBJ)
 	$(RM) $(OBJ)
 
-re:
-	$(RM) $(OBJ)
-	$(CC) main.c -c -o main.o
-	$(CC) school.c -c -o school.o
-	$(CC) $(OBJ) -o $(NAME)
+re: oclean all
