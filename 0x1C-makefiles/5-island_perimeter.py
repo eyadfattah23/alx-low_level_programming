@@ -24,13 +24,13 @@ def island_perimeter(grid):
             zone_per = 0
             if grid[row_index][zone_index] == 1:
                 zone_per = 4
-                if grid[row_index + 1][zone_index] == 1:
+                if (row_index + 1) < len(grid) and grid[row_index + 1][zone_index] == 1:
                     zone_per -= 1
-                if grid[row_index - 1][zone_index] == 1:
+                if (row_index - 1) >= 0 and grid[row_index - 1][zone_index] == 1:
                     zone_per -= 1
-                if grid[row_index][zone_index + 1] == 1:
+                if (zone_index + 1) < len(grid[row_index]) and grid[row_index][zone_index + 1] == 1:
                     zone_per -= 1
-                if grid[row_index][zone_index - 1] == 1:
+                if (zone_index - 1) >= 0 and grid[row_index][zone_index - 1] == 1:
                     zone_per -= 1
             per += zone_per
     return per
