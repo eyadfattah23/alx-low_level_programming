@@ -35,7 +35,7 @@ int binary_search_helper(int *array, int l, int h, int value)
 	if ((l <= h) && array[mid] == value)
 		return (mid);
 
-	else if ((l <= h) && value < array[mid - 1])
+	else if ((l <= h) && value < array[mid])
 		return (binary_search_helper(array, l, mid - 1, value));
 
 	else if ((l <= h) && value > array[mid])
