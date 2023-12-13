@@ -32,13 +32,13 @@ int binary_search_helper(int *array, int l, int h, int value)
 		}
 	}
 
-	if (array[mid] == value && (l <= h))
+	if ((l <= h) && array[mid] == value)
 		return (mid);
 
-	else if (value < array[mid - 1] && (l <= h))
+	else if ((l <= h) && value < array[mid - 1])
 		return (binary_search_helper(array, l, mid - 1, value));
 
-	else if (value > array[mid] && (l <= h))
+	else if ((l <= h) && value > array[mid])
 		return (binary_search_helper(array, mid + 1, h, value));
 
 	return (-1);
@@ -55,7 +55,7 @@ int binary_search_helper(int *array, int l, int h, int value)
  */
 int binary_search(int *array, size_t size, int value)
 {
-	if (!array)
+	if (!array || size == 0)
 	{
 		return (-1);
 	}
